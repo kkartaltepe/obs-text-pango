@@ -243,7 +243,7 @@ static void pango_source_get_defaults(obs_data_t *settings)
 
 	font = obs_data_create();
 	obs_data_set_default_string(font, "face", DEFAULT_FACE);
-	obs_data_set_default_int(font, "size", 32);
+	obs_data_set_default_int(font, "size", 256);
 	obs_data_set_default_obj(settings, "font", font);
 	obs_data_release(font);
 
