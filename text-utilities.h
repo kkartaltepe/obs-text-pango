@@ -30,7 +30,7 @@ cairo_t *create_layout_context()
 static void set_font(struct pango_source *src, PangoLayout *layout) {
 	PangoFontDescription *desc = NULL;
 
-#if FC_VERSION < 21291
+#if FC_VERSION >= 21291
 	if (src->font_from_file && src->font_file && strcmp(src->font_file, "") != 0) {
 		if (FcConfigAppFontAddFile(NULL, src->font_file)) {
 			FcFontSet *font_set = FcFontSetCreate();
