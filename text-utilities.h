@@ -40,7 +40,6 @@ static void set_font(struct pango_source *src, PangoLayout *layout) {
 				// need to explicitly notify newer Pango versions that a new font has been added to the FC map
 				// more info: https://gitlab.gnome.org/GNOME/gtk/-/issues/3886
 				if (PANGO_IS_FC_FONT_MAP(pango_cairo_font_map_get_default())) {
-					blog(LOG_INFO, "[pango] refreshing fontconfig map");
 					pango_fc_font_map_config_changed(PANGO_FC_FONT_MAP(pango_cairo_font_map_get_default()));
 				}
 #endif
