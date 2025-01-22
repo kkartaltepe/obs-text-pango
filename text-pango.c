@@ -111,7 +111,9 @@ void render_text(struct pango_source *src)
 
 	/* Allocate and initialize Cairo surface */
 	int stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, src->width);
-	surface_data = bzalloc(stride * src->height);
+	/* UGLY HACK: don't bzalloc(0), it causes a crash in newer OBS */
+	size_t allocsize = stride * src->height;
+	surface_data = bzalloc(allocsize != 0 ? allocsize : 1);
 	surface = cairo_image_surface_create_for_data(surface_data,
 			CAIRO_FORMAT_ARGB32,
 			src->width, src->height, stride);

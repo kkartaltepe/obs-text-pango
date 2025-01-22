@@ -365,7 +365,7 @@ static bool read_textfile(struct pango_source *src)
 		return true;
 	}
 
-	char *encoding = NULL;
+	const char *encoding = NULL;
 	if (encoding_header == 2) {
 		encoding = "UTF-16LE";
 	} else if (encoding_header == 3) {
