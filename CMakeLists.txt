@@ -93,7 +93,6 @@ target_link_libraries(text-pango
 	${PLATFORM_LIBRARIES}) # win only currently
 target_compile_definitions(text-pango PRIVATE ${CAIRO_C_FLAGS})
 
-
 if(STANDALONE_PLUGIN)
 	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 		set(_bit_suffix "64bit/")

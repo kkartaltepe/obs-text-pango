@@ -32,9 +32,9 @@ static void set_font(struct pango_source *src, PangoLayout *layout) {
 
 #if FC_VERSION >= 21291
 	if (src->font_from_file && src->font_file && strcmp(src->font_file, "") != 0) {
-		if (FcConfigAppFontAddFile(NULL, src->font_file)) {
+		if (FcConfigAppFontAddFile(NULL, (const FcChar8 *)src->font_file)) {
 			FcFontSet *font_set = FcFontSetCreate();
-			int count = FcFreeTypeQueryAll(src->font_file, -1, NULL, &count, font_set);
+			int count = FcFreeTypeQueryAll((const FcChar8 *)src->font_file, -1, NULL, &count, font_set);
 			if (count > 0 ) {
 				// need to explicitly notify newer Pango versions that a new font has been added to the FC map
 				// more info: https://gitlab.gnome.org/GNOME/gtk/-/issues/3886
@@ -230,7 +230,7 @@ static bool read_from_end(char **dst_buf, size_t *size, uint8_t *utf_encoding, c
 	uint8_t encoding = 0;
 	char bom[4] = {0, 0, 0, 0};
 	long header_offset = 0;
-	long alignment = 1;
+	size_t alignment = 1;
 	uint8_t bytes[2] = {0, 0};
 
 	bool utf16 = false;
@@ -268,7 +268,7 @@ static bool read_from_end(char **dst_buf, size_t *size, uint8_t *utf_encoding, c
 		fseek(file, cur_pos, SEEK_SET);
 
 		bytes_read = fread(bytes, 1, alignment, file);
-		if(bytes_read == alignment && strncmp(bytes, encoding_ln[encoding], alignment) == 0) {
+		if(bytes_read == alignment && strncmp((const char *)bytes, encoding_ln[encoding], alignment) == 0) {
 			if (trailing_ln_checked)
 				line_breaks++;
 			else
@@ -365,7 +365,7 @@ static bool read_textfile(struct pango_source *src)
 		return true;
 	}
 
-	char *encoding = NULL;
+	const char *encoding = NULL;
 	if (encoding_header == 2) {
 		encoding = "UTF-16LE";
 	} else if (encoding_header == 3) {

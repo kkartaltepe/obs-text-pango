@@ -447,8 +447,7 @@ static void pango_source_update(void *data, obs_data_t *settings)
 {
 	struct pango_source *src = data;
 	obs_data_t *font;
-	char *font_file =  NULL;
-	
+
 	if (src->text) {
 		bfree(src->text);
 		src->text = NULL;
@@ -582,7 +581,7 @@ bool obs_module_load()
 		bfree(tmplt_config_path);
 		bfree(abs_path);
 
-		if (FcConfigParseAndLoadFromMemory(config, config_buf.array, complain) != FcTrue) {
+		if (FcConfigParseAndLoadFromMemory(config, (const FcChar8 *)config_buf.array, complain) != FcTrue) {
 			FcConfigDestroy(config);
 			blog(LOG_ERROR, "[pango] Failed to load fontconfig");
 			dstr_free(&config_buf);
