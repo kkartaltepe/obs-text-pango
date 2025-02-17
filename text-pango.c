@@ -68,9 +68,8 @@ void render_text(struct pango_source *src)
 	/* Create a PangoLayout without manual context */
 	layout_context = create_layout_context();
 	layout = pango_cairo_create_layout(layout_context);
-	if (src->vertical) {
+	if (src->vertical)
 		pango_context_set_base_gravity(pango_layout_get_context(layout), PANGO_GRAVITY_EAST);
-	}
 
 	set_font(src, layout);
 	set_halignment(src, layout);
@@ -111,6 +110,12 @@ void render_text(struct pango_source *src)
 
 	/* Allocate and initialize Cairo surface */
 	int stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, src->width);
+	if (!stride || !src->height) {
+		g_object_unref(layout);
+		cairo_destroy(layout_context);
+		blog(LOG_DEBUG, "[pango]: Returning early from render - surface would be size of 0");
+		return;
+	}
 	surface_data = bzalloc(stride * src->height);
 	surface = cairo_image_surface_create_for_data(surface_data,
 			CAIRO_FORMAT_ARGB32,
