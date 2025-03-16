@@ -104,36 +104,36 @@ if(STANDALONE_PLUGIN)
 	if(APPLE)
 		install(TARGETS text-pango
 			LIBRARY DESTINATION "Library/Application Support/obs-studio/plugins/libtext-pango/bin/")
-		install(DIRECTORY data/common/
+		install(DIRECTORY data/
 			DESTINATION "Library/Application Support/obs-studio/plugins/libtext-pango/data")
-		install(DIRECTORY data/apple/
+		install(DIRECTORY apple/
 			DESTINATION "Library/Application Support/obs-studio/plugins/libtext-pango/data")
 		# for packaging, copy all dependencies, change dependency links
 		# run pkgbuild --identifier user.obsproject.kurufu.text-pango --root ./obs-text-pango-install/ text-pango-mac.pkg
 	elseif(UNIX AND NOT APPLE)
 		install(TARGETS text-pango 
 			LIBRARY DESTINATION "bin/")
-		install(DIRECTORY data/common/
+		install(DIRECTORY data/
 			DESTINATION data/)
 	else() # Not apple so normal layout
 		install(TARGETS text-pango
 			LIBRARY DESTINATION "obs-plugins/${_bit_suffix}/")
-		install(DIRECTORY data/common/
+		install(DIRECTORY data/
 			DESTINATION data/obs-plugins/text-pango)
 		# Platform specific data, like fontconfig in win32
 		install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}>
 			DESTINATION "obs-plugins/${_bit_suffix}/" OPTIONAL)
-		install(DIRECTORY data/win32/
+		install(DIRECTORY win32/
 			DESTINATION data/obs-plugins/text-pango)
 	endif()
 else()
-	install_obs_plugin_with_data(text-pango data/common)
-	# calling this twice might not work?
+	set_target_properties_obs(text-pango PROPERTIES FOLDER plugins/text-pango PREFIX "")
+	# Might not work for directories...
 	if(WIN32)
-		install_obs_plugin_with_data(text-pango data/win32)
+		target_add_resource(text-pango win32)
 	endif()
 	if(APPLE)
-		install_obs_plugin_with_data(text-pango data/apple)
+		target_add_resource(text-pango apple)
 	endif()
 endif()
 
