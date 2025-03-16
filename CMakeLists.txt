@@ -14,12 +14,14 @@ if(NOT OBS_OUTPUT_DIR)
 		obs-module.h
 		HINTS $ENV{OBS_DIR} ${OBS_DIR}
 		PATH_SUFFIXES
+			include
 			libobs)
 	find_library(OBS_LIBRARIES
 		NAMES obs libobs
 		HINTS $ENV{OBS_DIR} ${OBS_DIR}
 		PATH_SUFFIXES
 			install/lib
+			lib
 			install/bin/64bit
 			libobs)
 # Build as submodule of obs-studio
